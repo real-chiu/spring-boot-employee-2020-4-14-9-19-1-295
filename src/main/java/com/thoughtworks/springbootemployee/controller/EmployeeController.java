@@ -15,10 +15,10 @@ public class EmployeeController {
     List<Employee> employees = new ArrayList<>();
 
     public EmployeeController() {
-        employees.add(new Employee(0, "Xiaoming", 20, "Male"));
-        employees.add(new Employee(1, "Xiaohong", 19, "Male"));
-        employees.add(new Employee(2, "Xiaozhi", 15, "Male"));
-        employees.add(new Employee(3, "Xiaoxia", 16, "Female"));
+        employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000));
+        employees.add(new Employee(1, "Xiaohong", 19, "Male", 5000));
+        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 5000));
+        employees.add(new Employee(3, "Xiaoxia", 16, "Female", 5000));
     }
 
     public List<Employee> pagingEmployeeList(List<Employee> employees, Integer page, Integer pageSize) {

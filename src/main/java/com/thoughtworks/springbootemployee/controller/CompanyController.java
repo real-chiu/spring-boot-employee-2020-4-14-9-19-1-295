@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
@@ -16,8 +15,6 @@ public class CompanyController {
     List<Company> companies = new ArrayList<>();
 
     public CompanyController() {
-        List<Employee> employees = new ArrayList<>();
-
         Company company = new Company(0, "OOCL", 0, new ArrayList<>());
         company.addEmployee(new Employee(0, "Xiaoming", 20, "Male", 5000));
         company.addEmployee(new Employee(1, "Xiaohong", 19, "Male", 7000));
@@ -71,5 +68,16 @@ public class CompanyController {
         }
         List<Employee> employeesOfCompany = specificCompany.getEmployees();
         return new ResponseEntity<>(employeesOfCompany, HttpStatus.OK);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Company> createNewCompany(@RequestBody Company companyToBeAdded) {
+        Company newAddedCompany = companies.stream().filter(company -> companyToBeAdded.getId() == company.getId()).findFirst().orElse(null);
+        if (newAddedCompany != null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        companies.add(companyToBeAdded);
+        return new ResponseEntity<>(companyToBeAdded, HttpStatus.OK);
     }
 }
