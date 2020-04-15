@@ -23,8 +23,13 @@ public class EmployeeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getAllEmployees() {
-        return employees;
+    public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(required = false) String gender) {
+        if (gender == null) {
+            return new ResponseEntity<>(employees, HttpStatus.OK);
+        }
+        System.out.println(gender);
+        List<Employee> maleEmployees =  employees.stream().filter(employee -> employee.getGender().toLowerCase().equals(gender)).collect(Collectors.toList());
+        return new ResponseEntity<>(maleEmployees, HttpStatus.OK);
     }
 
     @GetMapping("/{employeeId}")
