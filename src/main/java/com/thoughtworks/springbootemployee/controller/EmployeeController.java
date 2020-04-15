@@ -45,9 +45,19 @@ public class EmployeeController {
         return new ResponseEntity<>(deletedEmployee, HttpStatus.OK);
     }
 
-//    @PutMapping("/{employeeId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Employee updateEmployee(Interger employeeId, Employee newEmployee) {
-//        return employee
-//    }
+    @PutMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public  ResponseEntity<Employee> updateEmployee(@PathVariable int employeeId, @RequestBody Employee newEmployee) {
+        Employee updatedEmployee = employees.stream().filter(employee -> employeeId == employee.getId()).findFirst().orElse(null);
+        if (updatedEmployee == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        employees = employees.stream().map(employee -> {
+            if(employee.getId() == employeeId) {
+                return newEmployee;
+            }
+            return employee;
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+    }
 }
