@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
@@ -79,5 +80,16 @@ public class CompanyController {
         }
         companies.add(companyToBeAdded);
         return new ResponseEntity<>(companyToBeAdded, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{companyId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Company> deleteCompanyWithId(@PathVariable int companyId) {
+        Company deletedCompany = companies.stream().filter(company -> companyId == company.getId()).findFirst().orElse(null);
+        if (deletedCompany == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        companies = companies.stream().filter(company -> companyId != company.getId()).collect(Collectors.toList());
+        return new ResponseEntity<>(deletedCompany, HttpStatus.OK);
     }
 }
