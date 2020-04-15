@@ -21,15 +21,26 @@ public class EmployeeController {
         employees.add(new Employee(3, "Xiaoxia", 16, "Female"));
     }
 
+    public List<Employee> pagingEmployeeList(List<Employee> employees, Integer page, Integer pageSize) {
+        if (page == null || pageSize == null) {
+            return employees;
+        };
+        Integer leftBound = (page-1) * pageSize;
+        Integer rightBound = (page-1) * pageSize + pageSize;
+        leftBound = leftBound > employees.size() - 1 ? 0 : leftBound;
+        rightBound = rightBound > employees.size() - 1 ? employees.size() : rightBound;
+        return employees.subList(leftBound,  rightBound);
+    }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(required = false) String gender) {
+    public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(required = false) String gender,
+                                                          @RequestParam(required = false) Integer page,
+                                                          @RequestParam(required = false) Integer pageSize) {
         if (gender == null) {
-            return new ResponseEntity<>(employees, HttpStatus.OK);
+            return new ResponseEntity<>(pagingEmployeeList(employees, page, pageSize), HttpStatus.OK);
         }
-        System.out.println(gender);
         List<Employee> maleEmployees =  employees.stream().filter(employee -> employee.getGender().toLowerCase().equals(gender)).collect(Collectors.toList());
-        return new ResponseEntity<>(maleEmployees, HttpStatus.OK);
+        return new ResponseEntity<>(pagingEmployeeList(maleEmployees, page, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{employeeId}")
