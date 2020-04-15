@@ -1,10 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +31,7 @@ public class EmployeeController {
         rightBound = rightBound > employees.size() - 1 ? employees.size() : rightBound;
         return employees.subList(leftBound,  rightBound);
     }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(required = false) String gender,
