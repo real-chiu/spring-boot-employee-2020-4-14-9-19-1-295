@@ -51,4 +51,14 @@ public class CompanyController {
                                                           @RequestParam(required = false) Integer pageSize) {
         return new ResponseEntity<>(pagingCompanyList(companies, page, pageSize), HttpStatus.OK);
     }
+
+    @GetMapping("/{companyId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Company> getCompanyWithId(@PathVariable int companyId) {
+        Company specificCompany =  companies.stream().filter(company -> company.getId() == companyId).findFirst().orElse(null);
+        if (specificCompany == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(specificCompany, HttpStatus.OK);
+    }
 }
