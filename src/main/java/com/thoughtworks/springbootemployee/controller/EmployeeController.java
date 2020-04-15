@@ -29,9 +29,14 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createNewEmployee(@RequestBody Employee employee) {
-        employees.add(employee);
-        return employee;
+    public ResponseEntity<Employee> createNewEmployee(@RequestBody Employee employeeTobeAdded) {
+        Employee newAddedEmployee = employees.stream().filter(employee -> employeeTobeAdded.getId() == employee.getId()).findFirst().orElse(null);
+        if (newAddedEmployee != null) {
+
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        employees.add(employeeTobeAdded);
+        return new ResponseEntity<>(employeeTobeAdded, HttpStatus.OK);
     }
 
     @DeleteMapping("/{employeeId}")
