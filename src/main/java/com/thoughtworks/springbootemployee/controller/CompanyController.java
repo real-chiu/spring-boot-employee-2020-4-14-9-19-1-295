@@ -92,4 +92,20 @@ public class CompanyController {
         companies = companies.stream().filter(company -> companyId != company.getId()).collect(Collectors.toList());
         return new ResponseEntity<>(deletedCompany, HttpStatus.OK);
     }
+
+    @PutMapping("/{companyId}")
+    @ResponseStatus(HttpStatus.OK)
+    public  ResponseEntity<Company> updateEmployee(@PathVariable int companyId, @RequestBody Company companyWithChanges) {
+        Company companyToBeUpdated = companies.stream().filter(company -> companyId == company.getId()).findFirst().orElse(null);
+        if (companyToBeUpdated == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        companies = companies.stream().map(company -> {
+            if(company.getId() == companyId) {
+                return companyWithChanges;
+            }
+            return company;
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(companyWithChanges, HttpStatus.OK);
+    }
 }
