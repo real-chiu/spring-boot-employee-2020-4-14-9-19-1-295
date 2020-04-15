@@ -1,10 +1,13 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -17,7 +20,7 @@ public class EmployeeController {
         employees.add(new Employee(2, "Xiaozhi", 15, "Male"));
         employees.add(new Employee(3, "Xiaoxia", 16, "Female"));
     }
-    
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllEmployees() {
@@ -30,4 +33,21 @@ public class EmployeeController {
         employees.add(employee);
         return employee;
     }
+
+    @DeleteMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Employee> deleteEmployee(@PathVariable int employeeId) {
+        Employee deletedEmployee = employees.stream().filter(employee -> employeeId == employee.getId()).findFirst().orElse(null);
+        if (deletedEmployee == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        employees = employees.stream().filter(employee -> employeeId != employee.getId()).collect(Collectors.toList());
+        return new ResponseEntity<>(deletedEmployee, HttpStatus.OK);
+    }
+
+//    @PutMapping("/{employeeId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Employee updateEmployee(Interger employeeId, Employee newEmployee) {
+//        return employee
+//    }
 }

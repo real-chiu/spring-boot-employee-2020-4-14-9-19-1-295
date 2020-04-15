@@ -1,10 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
 public class Employee {
-    public int id;
-    public String name;
-    public int age;
-    public String gender;
+    private int id;
+    private String name;
+    private int age;
+    private String gender;
 
     public Employee(int id, String name, int age, String gender) {
         this.id = id;
@@ -12,4 +12,21 @@ public class Employee {
         this.age = age;
         this.gender = gender;
     }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+
 }
