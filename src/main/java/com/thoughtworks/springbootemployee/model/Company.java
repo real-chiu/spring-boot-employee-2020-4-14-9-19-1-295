@@ -1,14 +1,15 @@
 package com.thoughtworks.springbootemployee.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Company {
     private int id;
     private String companyName;
     private int employeesNumber;
-    private ArrayList<Employee> employees;
+    private List<Employee> employees;
 
-    public Company(int id, String companyName, int employeesNumber, ArrayList<Employee> employees) {
+    public Company(int id, String companyName, int employeesNumber, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employeesNumber = employeesNumber;
@@ -48,7 +49,7 @@ public class Company {
         this.employeesNumber = employeesNumber;
     }
 
-    public ArrayList<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
