@@ -39,4 +39,13 @@ public class EmployeeRepository {
     public void deleteEmployee(int employeeId) {
         employees = employees.stream().filter(employee -> employeeId != employee.getId()).collect(Collectors.toList());
     }
+
+    public void updateEmployee(Employee employeeWithChanges) {
+        employees = employees.stream().map(employee -> {
+            if(employee.getId() == employeeWithChanges.getId()) {
+                return employeeWithChanges;
+            }
+            return employee;
+        }).collect(Collectors.toList());
+    }
 }

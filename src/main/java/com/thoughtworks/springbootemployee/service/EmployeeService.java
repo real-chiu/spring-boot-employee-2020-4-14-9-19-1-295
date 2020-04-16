@@ -43,4 +43,20 @@ public class EmployeeService {
         employeeRepository.deleteEmployee(employeeId);
         return employeeToBeDeleted;
     }
+
+    public Employee updateEmployee(Integer employeeId, String name, Integer age, String gender, Integer salary) {
+        Employee employeeToBeUpdated = employeeRepository.findEmployeeById(employeeId);
+        if (employeeToBeUpdated == null) {
+            return null;
+        }
+        Employee employeeWithChanges = new Employee(
+                employeeId == null ? employeeToBeUpdated.getId() : employeeId,
+                name  == null ? employeeToBeUpdated.getName() : name,
+                age == null ? employeeToBeUpdated.getAge() : age,
+                gender == null ? employeeToBeUpdated.getGender() : gender,
+                salary == null ? employeeToBeUpdated.getSalary() : salary
+        );
+        employeeRepository.updateEmployee(employeeWithChanges);
+        return employeeToBeUpdated;
+    }
 }

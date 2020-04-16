@@ -68,24 +68,10 @@ public class EmployeeController {
                                                     @RequestParam(required = false) Integer age,
                                                     @RequestParam(required = false) String gender,
                                                     @RequestParam(required = false) Integer salary) {
-        Employee employeeToBeUpdated = employees.stream().filter(employee -> employeeId == employee.getId()).findFirst().orElse(null);
+        Employee employeeToBeUpdated = employeeService.updateEmployee(employeeId, name, age, gender, salary);
         if (employeeToBeUpdated == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-
-        Employee employeeWithChanges = new Employee(
-                employeeId == null ? employeeToBeUpdated.getId() : employeeId,
-                name  == null ? employeeToBeUpdated.getName() : name,
-                age == null ? employeeToBeUpdated.getAge() : age,
-                gender == null ? employeeToBeUpdated.getGender() : gender,
-                salary == null ? employeeToBeUpdated.getSalary() : salary
-        );
-        employees = employees.stream().map(employee -> {
-            if(employee.getId() == employeeId) {
-                return employeeWithChanges;
-            }
-            return employee;
-        }).collect(Collectors.toList());
-        return new ResponseEntity<>(employeeWithChanges, HttpStatus.OK);
+        return new ResponseEntity<>(employeeToBeUpdated, HttpStatus.OK);
     }
 }
