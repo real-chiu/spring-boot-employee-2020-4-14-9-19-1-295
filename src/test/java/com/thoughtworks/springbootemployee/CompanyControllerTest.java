@@ -65,7 +65,7 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldAbleToFindAllCompany() {
-        RestAssuredMockMvc.standaloneSetup(new CompanyController(companyService));
+        doReturn(companies).when(companyService).getAllCompany(null, null);
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/companies");
