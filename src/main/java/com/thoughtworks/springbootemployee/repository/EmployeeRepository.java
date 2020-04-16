@@ -30,4 +30,9 @@ public class EmployeeRepository {
     public Employee findEmployeeById(int employeeId) {
         return employees.stream().filter(employee -> employee.getId() == employeeId).findFirst().orElse(null);
     }
+
+    public Employee addNewEmployee(Employee employeeTobeAdded) {
+        employees.add(employeeTobeAdded);
+        return employeeTobeAdded;
+    }
 }

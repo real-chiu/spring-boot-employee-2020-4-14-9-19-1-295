@@ -26,4 +26,12 @@ public class EmployeeService {
     public Employee getEmployeeById(int employeeId) {
         return employeeRepository.findEmployeeById(employeeId);
     }
+
+    public Employee addNewEmployee(Employee employeeTobeAdded) {
+        boolean isEmployeeWithIdAlreadyExist = employeeRepository.findEmployeeById(employeeTobeAdded.getId()) != null;
+        if (isEmployeeWithIdAlreadyExist){
+            return null;
+        }
+        return employeeRepository.addNewEmployee(employeeTobeAdded);
+    }
 }

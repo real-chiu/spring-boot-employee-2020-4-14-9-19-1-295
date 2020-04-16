@@ -43,12 +43,11 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Employee> createNewEmployee(@RequestBody Employee employeeTobeAdded) {
-        Employee newAddedEmployee = employees.stream().filter(employee -> employeeTobeAdded.getId() == employee.getId()).findFirst().orElse(null);
-        if (newAddedEmployee != null) {
+    public ResponseEntity<Employee> addNewEmployee(@RequestBody Employee employeeTobeAdded) {
+        Employee newAddedEmployee = employeeService.addNewEmployee(employeeTobeAdded);
+        if (newAddedEmployee == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        employees.add(employeeTobeAdded);
         return new ResponseEntity<>(employeeTobeAdded, HttpStatus.CREATED);
     }
 
