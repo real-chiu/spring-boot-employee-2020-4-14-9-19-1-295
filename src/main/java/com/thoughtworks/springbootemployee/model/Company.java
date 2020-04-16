@@ -8,12 +8,12 @@ public class Company {
     private int id;
     private String companyName;
     private int employeesNumber;
-    private ArrayList<Employee> employees;
+    private List<Employee> employees;
 
     public Company() {
     }
 
-    public Company(int id, String companyName, int employeesNumber, ArrayList<Employee> employees) {
+    public Company(int id, String companyName, int employeesNumber, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employeesNumber = employeesNumber;
@@ -43,12 +43,9 @@ public class Company {
     public void addEmployee(Employee employee) {
         employees.add(employee);
         //
-        incrementEmployeeCount();
+        employeesNumber = employees.size();
     }
 
-    private void incrementEmployeeCount() {
-        employeesNumber += 1;
-    }
 
     public void setEmployeesNumber(int employeesNumber) {
         this.employeesNumber = employeesNumber;
@@ -58,7 +55,7 @@ public class Company {
         return employees;
     }
 
-    public void setEmployees(ArrayList<Employee> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 

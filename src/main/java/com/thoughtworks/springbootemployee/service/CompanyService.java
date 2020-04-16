@@ -50,4 +50,19 @@ public class CompanyService {
         companyRepository.deleteEmployee(companyId);
         return companyToBeDeleted;
     }
+
+    public Company updateCompany(Integer companyId, String companyName, Integer employeesNumber, List<Employee> employees) {
+        Company companyToBeUpdated = companyRepository.findCompanyById(companyId);
+        if (companyToBeUpdated == null) {
+            return null;
+        }
+        Company companyWithChanges = new Company(
+                companyId == null ? companyToBeUpdated.getId() : companyId,
+                companyName  == null ? companyToBeUpdated.getCompanyName() : companyName,
+                employeesNumber == null ? companyToBeUpdated.getEmployeesNumber() : employeesNumber,
+                employees == null ? companyToBeUpdated.getEmployees() : employees
+        );
+        companyRepository.updateCompany(companyWithChanges);
+        return companyWithChanges;
+    }
 }

@@ -45,4 +45,13 @@ public class CompanyRepository {
     public void deleteEmployee(int companyId) {
         companies = companies.stream().filter(company -> company.getId() != companyId).collect(Collectors.toList());
     }
+
+    public void updateCompany(Company companyWithChanges) {
+        companies = companies.stream().map(company -> {
+            if(company.getId() == companyWithChanges.getId()) {
+                return companyWithChanges;
+            }
+            return company;
+        }).collect(Collectors.toList());
+    }
 }
