@@ -2,6 +2,8 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.controller.EmployeeController;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
 import io.restassured.http.ContentType;
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -9,6 +11,7 @@ import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,10 +23,12 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EmployeeControllerTest {
+    @Autowired
+    private EmployeeController employeeController;
 
     @Test
     public void shouldAbleToFindEmployeeById() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/employees/1");
@@ -36,7 +41,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void shouldAbleToFindAllEmployee() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/employees");
@@ -54,7 +59,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void shouldAbleToFindAllMaleEmployee() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/employees?gender=male");
@@ -73,7 +78,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void shouldAbleToFindAllEmployeeWithPaging() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/employees?page=2&pageSize=1");
@@ -92,7 +97,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void shouldAbleToAddEmployeeAndReturnAddedEmployee() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         Employee employeeToBeAdded = new Employee(4, "New comer", 23, "Male", 5000);
 
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
@@ -108,7 +113,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void shouldAbleToDeleteEmployeeAndReturnDeletedEmployee() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .delete("/employees/1");
@@ -128,7 +133,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void shouldAbleToModifyEmployee() {
-        RestAssuredMockMvc.standaloneSetup(new EmployeeController());
+        RestAssuredMockMvc.standaloneSetup(new EmployeeController(new EmployeeService(new EmployeeRepository())));
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .put("/employees/1?name=HelloWorld&age=30");

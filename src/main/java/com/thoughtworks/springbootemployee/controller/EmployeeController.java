@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +16,10 @@ import java.util.stream.Collectors;
 public class EmployeeController {
     List<Employee> employees = new ArrayList<>();
 
-    public EmployeeController() {
-        employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000));
-        employees.add(new Employee(1, "Xiaohong", 19, "Male", 5000));
-        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 5000));
-        employees.add(new Employee(3, "Xiaoxia", 16, "Female", 5000));
-    }
+    private final EmployeeService employeeService;
 
-    public List<Employee> pagingEmployeeList(List<Employee> employees, Integer page, Integer pageSize) {
-        if (page == null || pageSize == null) {
-            return employees;
-        };
-        Integer leftBound = (page-1) * pageSize;
-        Integer rightBound = (page-1) * pageSize + pageSize;
-        leftBound = leftBound > employees.size() - 1 ? 0 : leftBound;
-        rightBound = rightBound > employees.size() - 1 ? employees.size() : rightBound;
-        return employees.subList(leftBound,  rightBound);
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping
@@ -37,11 +27,8 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(required = false) String gender,
                                                           @RequestParam(required = false) Integer page,
                                                           @RequestParam(required = false) Integer pageSize) {
-        if (gender == null) {
-            return new ResponseEntity<>(pagingEmployeeList(employees, page, pageSize), HttpStatus.OK);
-        }
-        List<Employee> maleEmployees =  employees.stream().filter(employee -> employee.getGender().toLowerCase().equals(gender)).collect(Collectors.toList());
-        return new ResponseEntity<>(pagingEmployeeList(maleEmployees, page, pageSize), HttpStatus.OK);
+        List<Employee> allEmployees = employeeService.getAllEmployees(gender, page, pageSize);
+        return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
     @GetMapping("/{employeeId}")
