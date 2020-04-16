@@ -54,4 +54,22 @@ public class CompanyControllerTest {
         Assert.assertEquals("OOCL", companies.get(0).getCompanyName());
         Assert.assertEquals("CargoSmart", companies.get(1).getCompanyName());
     }
+
+    @Test
+    public void shouldAbleToFindAllCompanyWithPaging() {
+        RestAssuredMockMvc.standaloneSetup(new CompanyController());
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .when()
+                .get("/companies?page=2&pageSize=1");
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+
+        List<Company> companies = mockResponse.getBody().as(new TypeRef<List<Company>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+        });
+        Assert.assertEquals(1, companies.size());
+        Assert.assertEquals("CargoSmart", companies.get(0).getCompanyName());
+    }
 }
