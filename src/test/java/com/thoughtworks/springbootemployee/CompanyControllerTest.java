@@ -31,17 +31,18 @@ public class CompanyControllerTest {
     private CompanyService companyService;
 
     private List<Company> companies = new ArrayList<>();
-
+    private Company company = new Company(0, "OOCL", 0, new ArrayList<>());
+    private Company companyTwo = new Company(1, "CargoSmart", 0, new ArrayList<>());
     @Before
     public void setUp() {
         RestAssuredMockMvc.standaloneSetup(new CompanyController(companyService));
-        Company company = new Company(0, "OOCL", 0, new ArrayList<>());
+
         company.addEmployee(new Employee(0, "Xiaoming", 20, "Male", 5000));
         company.addEmployee(new Employee(1, "Xiaohong", 19, "Male", 7000));
         company.addEmployee(new Employee(2, "Xiaozhi", 15, "Male", 9000));
         company.addEmployee(new Employee(3, "Xiaoxia", 16, "Female", 10000));
 
-        Company companyTwo = new Company(1, "CargoSmart", 0, new ArrayList<>());
+
         companyTwo.addEmployee(new Employee(4, "A", 20, "Male", 5000));
         companyTwo.addEmployee(new Employee(5, "B", 19, "Male", 7000));
         companyTwo.addEmployee(new Employee(6, "C", 15, "Male", 9000));
@@ -85,7 +86,7 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldAbleToFindAllCompanyWithPaging() {
-        RestAssuredMockMvc.standaloneSetup(new CompanyController(companyService));
+        doReturn(companies.subList(1, 2)).when(companyService).getAllCompany(2, 1);
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/companies?page=2&pageSize=1");
@@ -99,5 +100,22 @@ public class CompanyControllerTest {
         });
         Assert.assertEquals(1, companies.size());
         Assert.assertEquals("CargoSmart", companies.get(0).getCompanyName());
+    }
+
+    @Test
+    public void shouldAbleToFindAllEmployeesOfCompanyWithCompanyId() {
+        doReturn(companyTwo.getEmployees()).when(companyService).getEmployeeOfCompanyByCompanyId(1);
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .when()
+                .get("/companies/1/employees");
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+
+        List<Employee> employeesOfCompany = mockResponse.getBody().as(new TypeRef<List<Employee>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+        });
+        Assert.assertEquals(4, employeesOfCompany.size());
     }
 }

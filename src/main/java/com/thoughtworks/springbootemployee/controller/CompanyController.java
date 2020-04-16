@@ -45,11 +45,10 @@ public class CompanyController {
     @GetMapping("/{companyId}/employees")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Employee>> getEmployeesSpecificCompany(@PathVariable int companyId) {
-        Company specificCompany =  companies.stream().filter(company -> company.getId() == companyId).findFirst().orElse(null);
-        if (specificCompany == null) {
+        List<Employee> employeesOfCompany =  companyService.getEmployeeOfCompanyByCompanyId(companyId);
+        if (employeesOfCompany == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        List<Employee> employeesOfCompany = specificCompany.getEmployees();
         return new ResponseEntity<>(employeesOfCompany, HttpStatus.OK);
     }
 

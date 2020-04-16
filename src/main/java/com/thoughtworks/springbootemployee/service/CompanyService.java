@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.commonUtils.Paging;
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,13 @@ public class CompanyService {
 
     public Company getCompanyById(int companyId) {
         return companyRepository.findCompanyById(companyId);
+    }
+
+    public List<Employee> getEmployeeOfCompanyByCompanyId(int companyId) {
+        Company specificCompany = getCompanyById(companyId);
+        if (specificCompany == null) {
+            return null;
+        }
+        return specificCompany.getEmployees();
     }
 }
