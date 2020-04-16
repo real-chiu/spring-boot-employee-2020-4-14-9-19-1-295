@@ -34,4 +34,13 @@ public class EmployeeService {
         }
         return employeeRepository.addNewEmployee(employeeTobeAdded);
     }
+
+    public Employee deleteEmployee(int employeeId) {
+        Employee employeeToBeDeleted = employeeRepository.findEmployeeById(employeeId);
+        if (employeeToBeDeleted == null) {
+            return null;
+        }
+        employeeRepository.deleteEmployee(employeeId);
+        return employeeToBeDeleted;
+    }
 }

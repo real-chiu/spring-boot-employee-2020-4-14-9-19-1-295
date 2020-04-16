@@ -35,4 +35,8 @@ public class EmployeeRepository {
         employees.add(employeeTobeAdded);
         return employeeTobeAdded;
     }
+
+    public void deleteEmployee(int employeeId) {
+        employees = employees.stream().filter(employee -> employeeId != employee.getId()).collect(Collectors.toList());
+    }
 }

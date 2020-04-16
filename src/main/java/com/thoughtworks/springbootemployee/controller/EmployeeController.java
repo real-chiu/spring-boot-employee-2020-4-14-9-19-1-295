@@ -54,11 +54,10 @@ public class EmployeeController {
     @DeleteMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Employee> deleteEmployee(@PathVariable int employeeId) {
-        Employee deletedEmployee = employees.stream().filter(employee -> employeeId == employee.getId()).findFirst().orElse(null);
+        Employee deletedEmployee = employeeService.deleteEmployee(employeeId);
         if (deletedEmployee == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        employees = employees.stream().filter(employee -> employeeId != employee.getId()).collect(Collectors.toList());
         return new ResponseEntity<>(deletedEmployee, HttpStatus.OK);
     }
 
