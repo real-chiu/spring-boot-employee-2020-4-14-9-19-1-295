@@ -35,6 +35,7 @@ public class CompanyControllerTest {
     private Company company = new Company(0, "OOCL", 0, new ArrayList<>());
     private Company companyTwo = new Company(1, "CargoSmart", 0, new ArrayList<>());
     private Company companyToBeAdded = new Company(2, "Alibaba", 0, new ArrayList<>());
+    private Company modifiedCompany = new Company(2, "Alibaba", 0, new ArrayList<>());
     @Before
     public void setUp() {
         RestAssuredMockMvc.standaloneSetup(new CompanyController(companyService));
@@ -55,6 +56,9 @@ public class CompanyControllerTest {
         companyToBeAdded.addEmployee(new Employee(10, "A", 20, "Male", 5000));
         companyToBeAdded.addEmployee(new Employee(11, "A", 20, "Male", 5000));
         companyToBeAdded.addEmployee(new Employee(12, "A", 20, "Male", 5000));
+
+        modifiedCompany.addEmployee(new Employee(9, "A", 20, "Male", 5000));
+        modifiedCompany.addEmployee(new Employee(10, "A", 20, "Male", 5000));
 
         companies.add(company);
         companies.add(companyTwo);
@@ -154,19 +158,20 @@ public class CompanyControllerTest {
         Assert.assertEquals(1, deletedCompany.getId());
     }
 
-//    @Test
-//    public void shouldAbleToModifyEmployee() {
-//        doReturn(modifiedEmployee).when(employeeService).updateEmployee(1, "HelloWorld", 30, null, null);
-//        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
-//                .when()
-//                .put("/employees/1?name=HelloWorld&age=30");
-//
-//        Assert.assertEquals(200, mockResponse.getStatusCode());
-//
-//        Employee employeeToBeModified = mockResponse.getBody().as(Employee.class);
-//        Employee modifiedEmployee = mockResponse.getBody().as(Employee.class);
-//        Assert.assertEquals(modifiedEmployee.getId(), employeeToBeModified.getId());
-//        Assert.assertEquals(modifiedEmployee.getName(), employeeToBeModified.getName());
-//        Assert.assertEquals(modifiedEmployee.getAge(), employeeToBeModified.getAge());
-//    }
+    @Test
+    public void shouldAbleToModifyCompany() {
+        doReturn(modifiedCompany).when(companyService).updateCompany(any(), any(), any(), any());
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .body(modifiedCompany)
+                .when()
+                .put("/companies/1");
+
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+
+        Company companyToBeModified = mockResponse.getBody().as(Company.class);
+
+        Assert.assertEquals(2, companyToBeModified.getId());
+        Assert.assertEquals("Alibaba", companyToBeModified.getCompanyName());
+        Assert.assertEquals(2, companyToBeModified.getEmployeesNumber());
+    }
 }
