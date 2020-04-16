@@ -62,7 +62,7 @@ public class EmployeeController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         employees.add(employeeTobeAdded);
-        return new ResponseEntity<>(employeeTobeAdded, HttpStatus.OK);
+        return new ResponseEntity<>(employeeTobeAdded, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{employeeId}")

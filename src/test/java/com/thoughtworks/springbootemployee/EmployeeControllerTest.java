@@ -28,7 +28,7 @@ public class EmployeeControllerTest {
     private EmployeeController employeeController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         RestAssuredMockMvc.standaloneSetup(employeeController);
     }
 
@@ -96,5 +96,21 @@ public class EmployeeControllerTest {
         });
         Assert.assertEquals(1, employees.size());
         Assert.assertEquals(1, employees.get(0).getId());
+    }
+
+    @Test
+    public void shouldAbleToAddEmployeeAndReturnAddedEmployee() {
+        Employee employeeToBeAdded = new Employee(4, "New comer", 23, "Male", 5000);
+
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .body(employeeToBeAdded)
+                .when()
+                .post("/employees");
+
+        Assert.assertEquals(201, mockResponse.getStatusCode());
+
+        Employee addedEmployee = mockResponse.getBody().as(Employee.class);
+        Assert.assertEquals(4, addedEmployee.getId());
+        Assert.assertEquals("New comer", addedEmployee.getName());
     }
 }
