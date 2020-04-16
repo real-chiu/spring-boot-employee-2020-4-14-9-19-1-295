@@ -33,4 +33,12 @@ public class CompanyService {
         }
         return specificCompany.getEmployees();
     }
+
+    public Company addNewCompany(Company companyToBeAdded) {
+        boolean isCompanyWithIdAlreadyExist = companyRepository.findCompanyById(companyToBeAdded.getId()) != null;
+        if (isCompanyWithIdAlreadyExist){
+            return null;
+        }
+        return companyRepository.addNewCompany(companyToBeAdded);
+    }
 }

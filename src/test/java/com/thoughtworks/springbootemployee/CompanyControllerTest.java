@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(SpringRunner.class)
@@ -33,6 +34,7 @@ public class CompanyControllerTest {
     private List<Company> companies = new ArrayList<>();
     private Company company = new Company(0, "OOCL", 0, new ArrayList<>());
     private Company companyTwo = new Company(1, "CargoSmart", 0, new ArrayList<>());
+    private Company companyToBeAdded = new Company(2, "Alibaba", 0, new ArrayList<>());
     @Before
     public void setUp() {
         RestAssuredMockMvc.standaloneSetup(new CompanyController(companyService));
@@ -47,6 +49,12 @@ public class CompanyControllerTest {
         companyTwo.addEmployee(new Employee(5, "B", 19, "Male", 7000));
         companyTwo.addEmployee(new Employee(6, "C", 15, "Male", 9000));
         companyTwo.addEmployee(new Employee(7, "D", 16, "Female", 10000));
+
+        companyToBeAdded.addEmployee(new Employee(8, "A", 20, "Male", 5000));
+        companyToBeAdded.addEmployee(new Employee(9, "A", 20, "Male", 5000));
+        companyToBeAdded.addEmployee(new Employee(10, "A", 20, "Male", 5000));
+        companyToBeAdded.addEmployee(new Employee(11, "A", 20, "Male", 5000));
+        companyToBeAdded.addEmployee(new Employee(12, "A", 20, "Male", 5000));
 
         companies.add(company);
         companies.add(companyTwo);
@@ -117,5 +125,19 @@ public class CompanyControllerTest {
             }
         });
         Assert.assertEquals(4, employeesOfCompany.size());
+    }
+
+    @Test
+    public void shouldAbleToAddNewCompany() {
+        doReturn(companyToBeAdded).when(companyService).addNewCompany(any());
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .body(companyToBeAdded)
+                .when()
+                .post("/companies");
+        Assert.assertEquals(201, mockResponse.getStatusCode());
+
+        Company addedCompany = mockResponse.getBody().as(Company.class);
+        Assert.assertEquals(2, addedCompany.getId());
+        Assert.assertEquals("Alibaba", addedCompany.getCompanyName());
     }
 }

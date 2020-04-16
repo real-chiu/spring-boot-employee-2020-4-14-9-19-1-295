@@ -54,13 +54,12 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Company> createNewCompany(@RequestBody Company companyToBeAdded) {
-        Company newAddedCompany = companies.stream().filter(company -> companyToBeAdded.getId() == company.getId()).findFirst().orElse(null);
-        if (newAddedCompany != null) {
+    public ResponseEntity<Company> addNewCompany(@RequestBody Company companyToBeAdded) {
+        Company newAddedCompany = companyService.addNewCompany(companyToBeAdded);
+        if (newAddedCompany == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        companies.add(companyToBeAdded);
-        return new ResponseEntity<>(companyToBeAdded, HttpStatus.OK);
+        return new ResponseEntity<>(companyToBeAdded, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{companyId}")

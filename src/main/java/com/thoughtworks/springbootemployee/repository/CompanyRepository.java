@@ -35,4 +35,9 @@ public class CompanyRepository {
     public Company findCompanyById(int companyId) {
         return companies.stream().filter(company -> company.getId() == companyId).findFirst().orElse(null);
     }
+
+    public Company addNewCompany(Company companyToBeAdded) {
+        companies.add(companyToBeAdded);
+        return companyToBeAdded;
+    }
 }
