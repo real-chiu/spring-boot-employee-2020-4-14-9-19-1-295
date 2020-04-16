@@ -113,4 +113,19 @@ public class EmployeeControllerTest {
         Assert.assertEquals(4, addedEmployee.getId());
         Assert.assertEquals("New comer", addedEmployee.getName());
     }
+
+    @Test
+    public void shouldAbleToDeleteEmployeeAndReturnDeletedEmployee() {
+
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .when()
+                .delete("/employees/1");
+
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+
+        Employee deletedEmployee = mockResponse.getBody().as(Employee.class);
+        Assert.assertEquals(1, deletedEmployee.getId());
+        Assert.assertEquals("Xiaohong", deletedEmployee.getName());
+        Assert.assertEquals(19, deletedEmployee.getAge());
+    }
 }
