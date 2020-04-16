@@ -140,4 +140,33 @@ public class CompanyControllerTest {
         Assert.assertEquals(2, addedCompany.getId());
         Assert.assertEquals("Alibaba", addedCompany.getCompanyName());
     }
+
+    @Test
+    public void shouldAbleToDeleteCompanyAndReturnDeletedCompany() {
+        doReturn(companyTwo).when(companyService).deleteCompany(1);
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .when()
+                .delete("/companies/1");
+
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+
+        Company deletedCompany = mockResponse.getBody().as(Company.class);
+        Assert.assertEquals(1, deletedCompany.getId());
+    }
+
+//    @Test
+//    public void shouldAbleToModifyEmployee() {
+//        doReturn(modifiedEmployee).when(employeeService).updateEmployee(1, "HelloWorld", 30, null, null);
+//        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+//                .when()
+//                .put("/employees/1?name=HelloWorld&age=30");
+//
+//        Assert.assertEquals(200, mockResponse.getStatusCode());
+//
+//        Employee employeeToBeModified = mockResponse.getBody().as(Employee.class);
+//        Employee modifiedEmployee = mockResponse.getBody().as(Employee.class);
+//        Assert.assertEquals(modifiedEmployee.getId(), employeeToBeModified.getId());
+//        Assert.assertEquals(modifiedEmployee.getName(), employeeToBeModified.getName());
+//        Assert.assertEquals(modifiedEmployee.getAge(), employeeToBeModified.getAge());
+//    }
 }

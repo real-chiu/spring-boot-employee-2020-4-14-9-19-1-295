@@ -41,4 +41,13 @@ public class CompanyService {
         }
         return companyRepository.addNewCompany(companyToBeAdded);
     }
+
+    public Company deleteCompany(int companyId) {
+        Company companyToBeDeleted = companyRepository.findCompanyById(companyId);
+        if (companyToBeDeleted == null) {
+            return null;
+        }
+        companyRepository.deleteEmployee(companyId);
+        return companyToBeDeleted;
+    }
 }

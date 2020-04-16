@@ -65,11 +65,10 @@ public class CompanyController {
     @DeleteMapping("/{companyId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Company> deleteCompanyWithId(@PathVariable int companyId) {
-        Company deletedCompany = companies.stream().filter(company -> companyId == company.getId()).findFirst().orElse(null);
+        Company deletedCompany = companyService.deleteCompany(companyId);
         if (deletedCompany == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        companies = companies.stream().filter(company -> companyId != company.getId()).collect(Collectors.toList());
         return new ResponseEntity<>(deletedCompany, HttpStatus.OK);
     }
 
