@@ -38,8 +38,10 @@ public class CompanyController {
         };
         Integer leftBound = (page-1) * pageSize;
         Integer rightBound = (page-1) * pageSize + pageSize;
+
         leftBound = leftBound > companies.size() - 1 ? 0 : leftBound;
         rightBound = rightBound > companies.size() - 1 ? companies.size() : rightBound;
+
         return companies.subList(leftBound,  rightBound);
     }
 
