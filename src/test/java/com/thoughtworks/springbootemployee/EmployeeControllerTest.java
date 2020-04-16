@@ -61,4 +61,22 @@ public class EmployeeControllerTest {
         });
         Assert.assertEquals(4, employees.size());
     }
+
+    @Test
+    public void shouldAbleToFindAllMaleEmployee() {
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .when()
+                .get("/employees?gender=male");
+
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+
+        List<Employee> employees = mockResponse.getBody().as(new TypeRef<List<Employee>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+        });
+        Assert.assertEquals(3, employees.size());
+        Assert.assertEquals(true, employees.stream().allMatch(employee -> "Male".equals(employee.getGender())));
+    }
 }
