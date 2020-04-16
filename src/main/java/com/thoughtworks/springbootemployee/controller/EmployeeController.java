@@ -78,11 +78,23 @@ public class EmployeeController {
 
     @PutMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<Employee> updateEmployee(@PathVariable int employeeId, @RequestBody Employee employeeWithChanges) {
+    public  ResponseEntity<Employee> updateEmployee(@RequestParam(required = false) Integer employeeId,
+                                                    @RequestParam(required = false) String name,
+                                                    @RequestParam(required = false) Integer age,
+                                                    @RequestParam(required = false) String gender,
+                                                    @RequestParam(required = false) Integer salary) {
         Employee employeeToBeUpdated = employees.stream().filter(employee -> employeeId == employee.getId()).findFirst().orElse(null);
         if (employeeToBeUpdated == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+
+        Employee employeeWithChanges = new Employee(
+                employeeId == null ? employeeToBeUpdated.getId() : employeeId,
+                name  == null ? employeeToBeUpdated.getName() : name,
+                age == null ? employeeToBeUpdated.getAge() : age,
+                gender == null ? employeeToBeUpdated.getGender() : gender,
+                salary == null ? employeeToBeUpdated.getSalary() : salary
+        );
         employees = employees.stream().map(employee -> {
             if(employee.getId() == employeeId) {
                 return employeeWithChanges;
