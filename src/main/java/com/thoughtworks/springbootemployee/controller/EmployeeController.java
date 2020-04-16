@@ -78,7 +78,7 @@ public class EmployeeController {
 
     @PutMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<Employee> updateEmployee(@RequestParam(required = false) Integer employeeId,
+    public  ResponseEntity<Employee> updateEmployee(@PathVariable Integer employeeId,
                                                     @RequestParam(required = false) String name,
                                                     @RequestParam(required = false) Integer age,
                                                     @RequestParam(required = false) String gender,

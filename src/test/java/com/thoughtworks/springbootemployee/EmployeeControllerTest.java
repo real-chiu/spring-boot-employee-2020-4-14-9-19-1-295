@@ -133,4 +133,25 @@ public class EmployeeControllerTest {
         Assert.assertEquals("Xiaohong", deletedEmployee.getName());
         Assert.assertEquals(19, deletedEmployee.getAge());
     }
+
+    @Test
+    public void shouldAbleToModifyEmployee() {
+
+        MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .when()
+                .put("/employees/1?name=HelloWorld&age=30");
+
+        MockMvcResponse mockModifiedEmployeeResponse = given().contentType(ContentType.JSON)
+                .when()
+                .get("/employees/1");
+
+        Assert.assertEquals(200, mockResponse.getStatusCode());
+        Assert.assertEquals(200, mockModifiedEmployeeResponse.getStatusCode());
+
+        Employee employeeToBeModified = mockResponse.getBody().as(Employee.class);
+        Employee modifiedEmployee = mockResponse.getBody().as(Employee.class);
+        Assert.assertEquals(modifiedEmployee.getId(), employeeToBeModified.getId());
+        Assert.assertEquals(modifiedEmployee.getName(), employeeToBeModified.getName());
+        Assert.assertEquals(modifiedEmployee.getAge(), employeeToBeModified.getAge());
+    }
 }
