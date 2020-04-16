@@ -35,7 +35,7 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Company> getCompanyWithId(@PathVariable int companyId) {
-        Company specificCompany =  companies.stream().filter(company -> company.getId() == companyId).findFirst().orElse(null);
+        Company specificCompany =  companyService.getCompanyById(companyId);
         if (specificCompany == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
