@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.CompanyService;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,17 @@ import java.util.stream.Collectors;
 public class CompanyController {
     List<Company> companies = new ArrayList<>();
 
+    private final CompanyService companyService;
+
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Company>> getAllCompanies(@RequestParam(required = false) Integer page,
                                                           @RequestParam(required = false) Integer pageSize) {
+        List<Company> allCompanies = companyService.getAllCompany(page, pageSize);
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 

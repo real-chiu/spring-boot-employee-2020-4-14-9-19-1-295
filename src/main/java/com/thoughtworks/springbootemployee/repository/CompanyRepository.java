@@ -27,4 +27,8 @@ public class CompanyRepository {
         companies.add(company);
         companies.add(companyTwo);
     }
+
+    public List<Company> findAllCompany() {
+        return companies;
+    }
 }
