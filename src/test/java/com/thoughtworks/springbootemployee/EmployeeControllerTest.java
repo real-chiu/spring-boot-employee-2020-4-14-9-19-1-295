@@ -45,8 +45,8 @@ public class EmployeeControllerTest {
         employees.add(new Employee(1, "Xiaohong", 19, "Male", 5000));
         employees.add(new Employee(2, "Xiaozhi", 15, "Male", 5000));
         employees.add(new Employee(3, "Xiaoxia", 16, "Female", 5000));
-
     }
+
     @Test
     public void shouldAbleToFindEmployeeById() {
         doReturn(employees.get(1)).when(employeeService).getEmployeeById(1);

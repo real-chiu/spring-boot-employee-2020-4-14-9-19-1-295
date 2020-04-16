@@ -29,7 +29,7 @@ public class CompanyController {
     public ResponseEntity<List<Company>> getAllCompanies(@RequestParam(required = false) Integer page,
                                                           @RequestParam(required = false) Integer pageSize) {
         List<Company> allCompanies = companyService.getAllCompany(page, pageSize);
-        return new ResponseEntity<>(companies, HttpStatus.OK);
+        return new ResponseEntity<>(allCompanies, HttpStatus.OK);
     }
 
     @GetMapping("/{companyId}")

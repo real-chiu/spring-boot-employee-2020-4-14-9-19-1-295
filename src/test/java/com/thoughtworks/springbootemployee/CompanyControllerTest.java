@@ -53,7 +53,6 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldAbleToFindCompanyById() {
-        
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
                 .when()
                 .get("/companies/1");
