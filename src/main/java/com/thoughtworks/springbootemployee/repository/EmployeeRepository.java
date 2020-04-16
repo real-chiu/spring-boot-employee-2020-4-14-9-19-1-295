@@ -26,4 +26,8 @@ public class EmployeeRepository {
         }
         return employees.stream().filter(employee -> employee.getGender().toLowerCase().equals(gender.toLowerCase())).collect(Collectors.toList());
     }
+
+    public Employee findEmployeeById(int employeeId) {
+        return employees.stream().filter(employee -> employee.getId() == employeeId).findFirst().orElse(null);
+    }
 }

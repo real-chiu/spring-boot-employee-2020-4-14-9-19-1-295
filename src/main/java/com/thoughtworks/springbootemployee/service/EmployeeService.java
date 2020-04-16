@@ -22,4 +22,8 @@ public class EmployeeService {
     public List<Employee> getAllEmployees(String gender, Integer page, Integer pageSize) {
         return paging.pagingEmployeeList(employeeRepository.findAllEmployee(gender), page, pageSize);
     }
+
+    public Employee getEmployeeById(int employeeId) {
+        return employeeRepository.findEmployeeById(employeeId);
+    }
 }

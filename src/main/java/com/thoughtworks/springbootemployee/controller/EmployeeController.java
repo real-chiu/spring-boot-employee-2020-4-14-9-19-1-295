@@ -33,12 +33,12 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Employee> getEmployees(@PathVariable int employeeId) {
-        Employee specificEmployee =  employees.stream().filter(employee -> employee.getId() == employeeId).findFirst().orElse(null);
-        if (specificEmployee == null) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable int employeeId) {
+        Employee specifiedEmployee = employeeService.getEmployeeById(employeeId);
+        if (specifiedEmployee == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(specificEmployee, HttpStatus.OK);
+        return new ResponseEntity<>(specifiedEmployee, HttpStatus.OK);
     }
 
     @PostMapping
