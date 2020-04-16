@@ -121,7 +121,12 @@ public class EmployeeControllerTest {
                 .when()
                 .delete("/employees/1");
 
+        MockMvcResponse mockGetDeletedEmployeeResponse = given().contentType(ContentType.JSON)
+                .when()
+                .get("/employees/1");
+
         Assert.assertEquals(200, mockResponse.getStatusCode());
+        Assert.assertEquals(404, mockGetDeletedEmployeeResponse.getStatusCode());
 
         Employee deletedEmployee = mockResponse.getBody().as(Employee.class);
         Assert.assertEquals(1, deletedEmployee.getId());
