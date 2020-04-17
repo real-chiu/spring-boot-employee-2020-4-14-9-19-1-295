@@ -24,8 +24,12 @@ public class EmployeeService {
         Pageable pageable = null;
         if (page != null && pageSize != null) {
             pageable = PageRequest.of(page, pageSize);
+            return employeeRepository.findAllByGender(gender, pageable);
         }
-        return employeeRepository.findAllByGender(gender, pageable);
+        if (gender != null) {
+            return employeeRepository.findAllByGender(gender);
+        }
+        return employeeRepository.findAll();
     }
 
     public Employee getEmployeeById(int employeeId) {
@@ -33,10 +37,6 @@ public class EmployeeService {
     }
 
     public Employee addNewEmployee(Employee employeeTobeAdded) {
-        boolean isEmployeeWithIdAlreadyExist = employeeRepository.findById(employeeTobeAdded.getId()) != null;
-        if (isEmployeeWithIdAlreadyExist){
-            return null;
-        }
         return employeeRepository.save(employeeTobeAdded);
     }
 

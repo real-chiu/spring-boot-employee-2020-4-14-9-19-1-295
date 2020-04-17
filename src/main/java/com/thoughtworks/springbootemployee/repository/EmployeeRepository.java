@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> findAllByGender(String gender, Pageable pageable);
+    List<Employee> findAllByGender(String gender);
 }
