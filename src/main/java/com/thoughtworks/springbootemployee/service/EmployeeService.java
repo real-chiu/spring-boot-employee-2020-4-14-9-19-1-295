@@ -25,7 +25,7 @@ public class EmployeeService {
         if (page != null && pageSize != null) {
             pageable = PageRequest.of(page, pageSize);
         }
-        return paging.pagingEmployeeList(employeeRepository.findAllByGender(gender, pageable), page, pageSize);
+        return employeeRepository.findAllByGender(gender, pageable);
     }
 
     public Employee getEmployeeById(int employeeId) {
@@ -49,7 +49,7 @@ public class EmployeeService {
         return employeeToBeDeleted;
     }
 
-    public Employee updateEmployee(Integer employeeId, Employee employeeTobeUpdated) {
+    public Employee updateEmployee(Integer employeeId, Employee employeeDetailsTobeUpdated) {
         Employee employeeToBeUpdated = employeeRepository.findById(employeeId).orElse(null);
         if (employeeToBeUpdated == null) {
             return null;
@@ -57,10 +57,11 @@ public class EmployeeService {
         // move logic
         Employee employeeWithChanges = new Employee(
                 employeeId == null ? employeeToBeUpdated.getId() : employeeId,
-                employeeTobeUpdated.getName()  == null ? employeeToBeUpdated.getName() : employeeTobeUpdated.getName(),
-                (Integer) employeeTobeUpdated.getAge() == null ? employeeToBeUpdated.getAge() : employeeTobeUpdated.getAge(),
-                employeeTobeUpdated.getGender() == null ? employeeToBeUpdated.getGender() : employeeTobeUpdated.getGender(),
-                (Integer) employeeTobeUpdated.getSalary() == null ? employeeToBeUpdated.getSalary() : employeeTobeUpdated.getSalary()
+                employeeDetailsTobeUpdated.getName()  == null ? employeeToBeUpdated.getName() : employeeDetailsTobeUpdated.getName(),
+                (Integer) employeeDetailsTobeUpdated.getAge() == null ? employeeToBeUpdated.getAge() : employeeDetailsTobeUpdated.getAge(),
+                employeeDetailsTobeUpdated.getGender() == null ? employeeToBeUpdated.getGender() : employeeDetailsTobeUpdated.getGender(),
+                (Integer) employeeDetailsTobeUpdated.getSalary() == null ? employeeToBeUpdated.getSalary() : employeeDetailsTobeUpdated.getSalary(),
+                (Integer) employeeDetailsTobeUpdated.getCompanyId() == null ? employeeToBeUpdated.getCompanyId() : employeeDetailsTobeUpdated.getCompanyId()
         );
         employeeRepository.save(employeeWithChanges);
         return employeeToBeUpdated;
