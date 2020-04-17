@@ -4,6 +4,8 @@ import com.thoughtworks.springbootemployee.commonUtils.Paging;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,18 +14,20 @@ import java.util.List;
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
-    private Paging paging = new Paging();
-
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
     public List<Company> getAllCompany(Integer page, Integer pageSize) {
-        return paging.pagingCompanyList(companyRepository.findAllCompany(), page, pageSize);
+        Pageable pageable = null;
+        if (page != null && pageSize != null) {
+            pageable = PageRequest.of(page, pageSize);
+        }
+        return (List<Company>) companyRepository.findAll(pageable);
     }
 
     public Company getCompanyById(int companyId) {
-        return companyRepository.findCompanyById(companyId);
+        return companyRepository.findById(companyId).orElse(null);
     }
 
     public List<Employee> getEmployeeOfCompanyByCompanyId(int companyId) {
@@ -35,24 +39,24 @@ public class CompanyService {
     }
 
     public Company addNewCompany(Company companyToBeAdded) {
-        boolean isCompanyWithIdAlreadyExist = companyRepository.findCompanyById(companyToBeAdded.getId()) != null;
+        boolean isCompanyWithIdAlreadyExist = companyRepository.findById(companyToBeAdded.getId()) != null;
         if (isCompanyWithIdAlreadyExist){
             return null;
         }
-        return companyRepository.addNewCompany(companyToBeAdded);
+        return companyRepository.save(companyToBeAdded);
     }
 
     public Company deleteCompany(int companyId) {
-        Company companyToBeDeleted = companyRepository.findCompanyById(companyId);
+        Company companyToBeDeleted = companyRepository.findById(companyId).orElse(null);
         if (companyToBeDeleted == null) {
             return null;
         }
-        companyRepository.deleteEmployee(companyId);
+        companyRepository.deleteById(companyId);
         return companyToBeDeleted;
     }
 
     public Company updateCompany(Integer companyId, String companyName, Integer employeesNumber, List<Employee> employees) {
-        Company companyToBeUpdated = companyRepository.findCompanyById(companyId);
+        Company companyToBeUpdated = companyRepository.findById(companyId).orElse(null);
         if (companyToBeUpdated == null) {
             return null;
         }
@@ -62,7 +66,7 @@ public class CompanyService {
                 employeesNumber == null ? companyToBeUpdated.getEmployeesNumber() : employeesNumber,
                 employees == null ? companyToBeUpdated.getEmployees() : employees
         );
-        companyRepository.updateCompany(companyWithChanges);
+        companyRepository.save(companyWithChanges);
         return companyWithChanges;
     }
 }

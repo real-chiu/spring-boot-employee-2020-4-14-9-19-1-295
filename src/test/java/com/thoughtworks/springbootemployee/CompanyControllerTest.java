@@ -36,29 +36,42 @@ public class CompanyControllerTest {
     private Company companyTwo = new Company(1, "CargoSmart", 0, new ArrayList<>());
     private Company companyToBeAdded = new Company(2, "Alibaba", 0, new ArrayList<>());
     private Company modifiedCompany = new Company(2, "Alibaba", 0, new ArrayList<>());
+
     @Before
     public void setUp() {
         RestAssuredMockMvc.standaloneSetup(new CompanyController(companyService));
+        List<Employee> companyEmployees = new ArrayList<>();
+        companyEmployees.add(new Employee(0, "Xiaoming", 20, "Male", 5000, 0));
+        companyEmployees.add(new Employee(0, "Xiaoming", 20, "Male", 5000, 0));
+        companyEmployees.add(new Employee(1, "Xiaohong", 19, "Male", 7000, 0));
+        companyEmployees.add(new Employee(2, "Xiaozhi", 15, "Male", 9000, 0));
+        companyEmployees.add(new Employee(3, "Xiaoxia", 16, "Female", 10000, 0));
+        company.setEmployees(companyEmployees);
+        company.setEmployeesNumber(4);
 
-        company.addEmployee(new Employee(0, "Xiaoming", 20, "Male", 5000));
-        company.addEmployee(new Employee(1, "Xiaohong", 19, "Male", 7000));
-        company.addEmployee(new Employee(2, "Xiaozhi", 15, "Male", 9000));
-        company.addEmployee(new Employee(3, "Xiaoxia", 16, "Female", 10000));
+        List<Employee> companyTwoEmployees = new ArrayList<>();
+        companyTwoEmployees.add(new Employee(4, "A", 20, "Male", 5000, 1));
+        companyTwoEmployees.add(new Employee(5, "B", 19, "Male", 7000, 1));
+        companyTwoEmployees.add(new Employee(6, "C", 15, "Male", 9000, 1));
+        companyTwoEmployees.add(new Employee(7, "D", 16, "Female", 10000, 1));
+        companyTwo.setEmployees(companyTwoEmployees);
+        companyTwo.setEmployeesNumber(4);
 
+        List<Employee> companyToBeAddedEmployees = new ArrayList<>();
+        companyToBeAddedEmployees.add(new Employee(8, "A", 20, "Male", 5000, 2));
+        companyToBeAddedEmployees.add(new Employee(9, "A", 20, "Male", 5000, 2));
+        companyToBeAddedEmployees.add(new Employee(10, "A", 20, "Male", 5000, 2));
+        companyToBeAddedEmployees.add(new Employee(11, "A", 20, "Male", 5000, 2));
+        companyToBeAddedEmployees.add(new Employee(12, "A", 20, "Male", 5000, 2));
+        companyToBeAdded.setEmployees(companyToBeAddedEmployees);
+        companyToBeAdded.setEmployeesNumber(5);
 
-        companyTwo.addEmployee(new Employee(4, "A", 20, "Male", 5000));
-        companyTwo.addEmployee(new Employee(5, "B", 19, "Male", 7000));
-        companyTwo.addEmployee(new Employee(6, "C", 15, "Male", 9000));
-        companyTwo.addEmployee(new Employee(7, "D", 16, "Female", 10000));
+        List<Employee> companyToBeUpdatedEmployees = new ArrayList<>();
 
-        companyToBeAdded.addEmployee(new Employee(8, "A", 20, "Male", 5000));
-        companyToBeAdded.addEmployee(new Employee(9, "A", 20, "Male", 5000));
-        companyToBeAdded.addEmployee(new Employee(10, "A", 20, "Male", 5000));
-        companyToBeAdded.addEmployee(new Employee(11, "A", 20, "Male", 5000));
-        companyToBeAdded.addEmployee(new Employee(12, "A", 20, "Male", 5000));
-
-        modifiedCompany.addEmployee(new Employee(9, "A", 20, "Male", 5000));
-        modifiedCompany.addEmployee(new Employee(10, "A", 20, "Male", 5000));
+        companyToBeUpdatedEmployees.add(new Employee(9, "A", 20, "Male", 5000, 2));
+        companyToBeUpdatedEmployees.add(new Employee(10, "A", 20, "Male", 5000, 2));
+        modifiedCompany.setEmployees(companyToBeUpdatedEmployees);
+        modifiedCompany.setEmployeesNumber(2);
 
         companies.add(company);
         companies.add(companyTwo);
