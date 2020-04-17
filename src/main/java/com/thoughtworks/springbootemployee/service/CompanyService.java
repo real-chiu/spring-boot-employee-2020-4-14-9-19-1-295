@@ -19,9 +19,8 @@ public class CompanyService {
     }
 
     public List<Company> getAllCompany(Integer page, Integer pageSize) {
-        Pageable pageable = null;
         if (page != null && pageSize != null) {
-            pageable = PageRequest.of(page, pageSize);
+            Pageable pageable = PageRequest.of(page, pageSize);
             return (List<Company>) companyRepository.findAll(pageable);
         }
         return companyRepository.findAll();

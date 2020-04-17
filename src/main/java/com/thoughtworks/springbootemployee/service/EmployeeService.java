@@ -21,9 +21,8 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployees(String gender, Integer page, Integer pageSize) {
-        Pageable pageable = null;
         if (page != null && pageSize != null) {
-            pageable = PageRequest.of(page, pageSize);
+            Pageable pageable = PageRequest.of(page, pageSize);
             return employeeRepository.findAllByGender(gender, pageable);
         }
         if (gender != null) {
