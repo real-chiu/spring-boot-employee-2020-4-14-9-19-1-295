@@ -39,10 +39,6 @@ public class CompanyService {
     }
 
     public Company addNewCompany(Company companyToBeAdded) {
-        boolean isCompanyWithIdAlreadyExist = companyRepository.findById(companyToBeAdded.getId()) != null;
-        if (isCompanyWithIdAlreadyExist){
-            return null;
-        }
         return companyRepository.save(companyToBeAdded);
     }
 
