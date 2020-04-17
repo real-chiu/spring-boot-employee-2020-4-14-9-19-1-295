@@ -58,7 +58,7 @@ public class CompanyService {
             return null;
         }
         Company companyWithChanges = new Company(
-                companyId == null ? companyToBeUpdated.getId() : companyId,
+                companyId,
                 companyName  == null ? companyToBeUpdated.getCompanyName() : companyName,
                 employeesNumber == null ? companyToBeUpdated.getEmployeesNumber() : employeesNumber,
                 employees == null ? companyToBeUpdated.getEmployees() : employees

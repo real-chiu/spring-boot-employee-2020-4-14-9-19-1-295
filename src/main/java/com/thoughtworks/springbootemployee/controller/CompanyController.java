@@ -76,7 +76,7 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.OK)
     public  ResponseEntity<Company> updateCompany(@PathVariable int companyId,
                                                    @RequestBody Company companyToBeModified) {
-        Company companyToBeUpdated = companyService.updateCompany(companyToBeModified.getId(),
+        Company companyToBeUpdated = companyService.updateCompany(companyId,
                 companyToBeModified.getCompanyName(),
                 companyToBeModified.getEmployeesNumber(),
                 companyToBeModified.getEmployees());
