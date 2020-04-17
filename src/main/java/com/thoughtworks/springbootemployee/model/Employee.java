@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -21,4 +22,8 @@ public class Employee {
     private String gender;
     private Integer salary;
     private Integer companyId;
+    @OneToOne()
+    @JoinColumn(name = "parkingBoyId", referencedColumnName = "id")
+    private ParkingBoy parkingBoy;
+
 }

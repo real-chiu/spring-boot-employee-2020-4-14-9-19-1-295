@@ -44,7 +44,7 @@ public class EmployeeService {
         if (employeeToBeDeleted == null) {
             return null;
         }
-        employeeRepository.deleteById(employeeId); 
+        employeeRepository.deleteById(employeeId);
         return employeeToBeDeleted;
     }
 
@@ -60,7 +60,8 @@ public class EmployeeService {
                 (Integer) employeeDetailsTobeUpdated.getAge() == null ? employeeToBeUpdated.getAge() : employeeDetailsTobeUpdated.getAge(),
                 employeeDetailsTobeUpdated.getGender() == null ? employeeToBeUpdated.getGender() : employeeDetailsTobeUpdated.getGender(),
                 (Integer) employeeDetailsTobeUpdated.getSalary() == null ? employeeToBeUpdated.getSalary() : employeeDetailsTobeUpdated.getSalary(),
-                (Integer) employeeDetailsTobeUpdated.getCompanyId() == null ? employeeToBeUpdated.getCompanyId() : employeeDetailsTobeUpdated.getCompanyId()
+                (Integer) employeeDetailsTobeUpdated.getCompanyId() == null ? employeeToBeUpdated.getCompanyId() : employeeDetailsTobeUpdated.getCompanyId(),
+                employeeDetailsTobeUpdated.getParkingBoy() == null ? employeeToBeUpdated.getParkingBoy() : employeeDetailsTobeUpdated.getParkingBoy()
         );
         employeeRepository.save(employeeWithChanges);
         return employeeToBeUpdated;

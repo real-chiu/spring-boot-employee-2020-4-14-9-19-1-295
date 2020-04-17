@@ -36,15 +36,15 @@ public class EmployeeControllerTest {
 
     private List<Employee> employees = new ArrayList<>();
 
-    private Employee employeeToBeAdded = new Employee(4, "New comer", 23, "Male", 5000, 0);
-    private Employee modifiedEmployee = new Employee(1, "HelloWorld", 30, "Male", 5000, 0);
+    private Employee employeeToBeAdded = new Employee(4, "New comer", 23, "Male", 5000, 0, null);
+    private Employee modifiedEmployee = new Employee(1, "HelloWorld", 30, "Male", 5000, 0, null);
     @Before
     public void setUp() {
         RestAssuredMockMvc.standaloneSetup(new EmployeeController(employeeService));
-        employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000, 0));
-        employees.add(new Employee(1, "Xiaohong", 19, "Male", 5000, 0));
-        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 5000, 0));
-        employees.add(new Employee(3, "Xiaoxia", 16, "Female", 5000, 0));
+        employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000, 0, null));
+        employees.add(new Employee(1, "Xiaohong", 19, "Male", 5000, 0, null));
+        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 5000, 0, null));
+        employees.add(new Employee(3, "Xiaoxia", 16, "Female", 5000, 0, null));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class EmployeeControllerTest {
     public void shouldAbleToModifyEmployee() {
         doReturn(modifiedEmployee).when(employeeService).updateEmployee(any(), any());
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
-                .body(new Employee(1, "HelloWorld", 30, "Male", 5000, 0))
+                .body(new Employee(1, "HelloWorld", 30, "Male", 5000, 0, null))
                 .when()
                 .put("/employees/1?name=HelloWorld&age=30");
 
