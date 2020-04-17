@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Paging {
 
+    //combine
     public List<Employee> pagingEmployeeList(List<Employee> employees, Integer page, Integer pageSize) {
         if (page == null || pageSize == null) {
             return employees;

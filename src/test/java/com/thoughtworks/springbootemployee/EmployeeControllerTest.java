@@ -56,7 +56,7 @@ public class EmployeeControllerTest {
         Assert.assertEquals(200, mockResponse.getStatusCode());
 
         Employee employee = mockResponse.getBody().as(Employee.class);
-        Assert.assertEquals(1, employee.getId());
+        Assert.assertEquals((Integer) 1, employee.getId());
         Assert.assertEquals("Xiaohong", employee.getName());
     }
 
@@ -113,7 +113,7 @@ public class EmployeeControllerTest {
             }
         });
         Assert.assertEquals(1, employees.size());
-        Assert.assertEquals(1, employees.get(0).getId());
+        Assert.assertEquals((Integer) 1, employees.get(0).getId());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class EmployeeControllerTest {
         Assert.assertEquals(201, mockResponse.getStatusCode());
 
         Employee addedEmployee = mockResponse.getBody().as(Employee.class);
-        Assert.assertEquals(4, addedEmployee.getId());
+        Assert.assertEquals((Integer)  4, addedEmployee.getId());
         Assert.assertEquals("New comer", addedEmployee.getName());
     }
 
@@ -141,15 +141,16 @@ public class EmployeeControllerTest {
         Assert.assertEquals(200, mockResponse.getStatusCode());
 
         Employee deletedEmployee = mockResponse.getBody().as(Employee.class);
-        Assert.assertEquals(1, deletedEmployee.getId());
+        Assert.assertEquals((Integer) 1 , deletedEmployee.getId());
         Assert.assertEquals("Xiaohong", deletedEmployee.getName());
-        Assert.assertEquals(19, deletedEmployee.getAge());
+        Assert.assertEquals((Integer) 19, deletedEmployee.getAge());
     }
 
     @Test
     public void shouldAbleToModifyEmployee() {
-        doReturn(modifiedEmployee).when(employeeService).updateEmployee(1, "HelloWorld", 30, null, null);
+        doReturn(modifiedEmployee).when(employeeService).updateEmployee(any(), any());
         MockMvcResponse mockResponse = given().contentType(ContentType.JSON)
+                .body(new Employee(1, "HelloWorld", 30, "Male", 5000))
                 .when()
                 .put("/employees/1?name=HelloWorld&age=30");
 

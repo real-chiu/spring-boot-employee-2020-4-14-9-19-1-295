@@ -1,51 +1,14 @@
 package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Repository
-public class EmployeeRepository {
-
-    private List<Employee> employees = new ArrayList<>();
-
-    public EmployeeRepository() {
-        employees.add(new Employee(0, "Xiaoming", 20, "Male", 5000));
-        employees.add(new Employee(1, "Xiaohong", 19, "Male", 5000));
-        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 5000));
-        employees.add(new Employee(3, "Xiaoxia", 16, "Female", 5000));
-    }
-
-    public List<Employee> findAllEmployee(String gender) {
-        if (gender == null) {
-            return employees;
-        }
-        return employees.stream().filter(employee -> employee.getGender().toLowerCase().equals(gender.toLowerCase())).collect(Collectors.toList());
-    }
-
-    public Employee findEmployeeById(int employeeId) {
-        return employees.stream().filter(employee -> employee.getId() == employeeId).findFirst().orElse(null);
-    }
-
-    public Employee addNewEmployee(Employee employeeTobeAdded) {
-        employees.add(employeeTobeAdded);
-        return employeeTobeAdded;
-    }
-
-    public void deleteEmployee(int employeeId) {
-        employees = employees.stream().filter(employee -> employeeId != employee.getId()).collect(Collectors.toList());
-    }
-
-    public void updateEmployee(Employee employeeWithChanges) {
-        employees = employees.stream().map(employee -> {
-            if(employee.getId() == employeeWithChanges.getId()) {
-                return employeeWithChanges;
-            }
-            return employee;
-        }).collect(Collectors.toList());
-    }
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+    List<Employee> findAllByGender(String gender, Pageable pageable);
 }

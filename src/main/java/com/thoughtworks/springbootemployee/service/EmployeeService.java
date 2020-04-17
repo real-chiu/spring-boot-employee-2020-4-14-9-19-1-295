@@ -3,6 +3,8 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.commonUtils.Paging;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,45 +21,48 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployees(String gender, Integer page, Integer pageSize) {
-        return paging.pagingEmployeeList(employeeRepository.findAllEmployee(gender), page, pageSize);
+        Pageable pageable = null;
+        if (page != null && pageSize != null) {
+            pageable = PageRequest.of(page, pageSize);
+        }
+        return paging.pagingEmployeeList(employeeRepository.findAllByGender(gender, pageable), page, pageSize);
     }
 
     public Employee getEmployeeById(int employeeId) {
-        return employeeRepository.findEmployeeById(employeeId);
+        return employeeRepository.findById(employeeId).orElse(null);
     }
 
     public Employee addNewEmployee(Employee employeeTobeAdded) {
-        boolean isEmployeeWithIdAlreadyExist = employeeRepository.findEmployeeById(employeeTobeAdded.getId()) != null;
+        boolean isEmployeeWithIdAlreadyExist = employeeRepository.findById(employeeTobeAdded.getId()) != null;
         if (isEmployeeWithIdAlreadyExist){
             return null;
         }
-        return employeeRepository.addNewEmployee(employeeTobeAdded);
+        return employeeRepository.save(employeeTobeAdded);
     }
 
     public Employee deleteEmployee(int employeeId) {
-        Employee employeeToBeDeleted = employeeRepository.findEmployeeById(employeeId);
+        Employee employeeToBeDeleted = employeeRepository.findById(employeeId).orElse(null);
         if (employeeToBeDeleted == null) {
             return null;
         }
-        employeeRepository.deleteEmployee(employeeId);
+        employeeRepository.deleteById(employeeId);
         return employeeToBeDeleted;
     }
 
-    public Employee updateEmployee(Integer employeeId, String name, Integer age, String gender, Integer salary) {
-        Employee employeeToBeUpdated = employeeRepository.findEmployeeById(employeeId);
+    public Employee updateEmployee(Integer employeeId, Employee employeeTobeUpdated) {
+        Employee employeeToBeUpdated = employeeRepository.findById(employeeId).orElse(null);
         if (employeeToBeUpdated == null) {
             return null;
         }
+        // move logic
         Employee employeeWithChanges = new Employee(
                 employeeId == null ? employeeToBeUpdated.getId() : employeeId,
-                name  == null ? employeeToBeUpdated.getName() : name,
-                age == null ? employeeToBeUpdated.getAge() : age,
-                gender == null ? employeeToBeUpdated.getGender() : gender,
-                salary == null ? employeeToBeUpdated.getSalary() : salary
+                employeeTobeUpdated.getName()  == null ? employeeToBeUpdated.getName() : employeeTobeUpdated.getName(),
+                (Integer) employeeTobeUpdated.getAge() == null ? employeeToBeUpdated.getAge() : employeeTobeUpdated.getAge(),
+                employeeTobeUpdated.getGender() == null ? employeeToBeUpdated.getGender() : employeeTobeUpdated.getGender(),
+                (Integer) employeeTobeUpdated.getSalary() == null ? employeeToBeUpdated.getSalary() : employeeTobeUpdated.getSalary()
         );
-        employeeRepository.updateEmployee(employeeWithChanges);
+        employeeRepository.save(employeeWithChanges);
         return employeeToBeUpdated;
     }
-
-
 }

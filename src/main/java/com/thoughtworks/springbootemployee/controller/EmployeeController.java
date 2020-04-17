@@ -61,11 +61,8 @@ public class EmployeeController {
     @PutMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
     public  ResponseEntity<Employee> updateEmployee(@PathVariable Integer employeeId,
-                                                    @RequestParam(required = false) String name,
-                                                    @RequestParam(required = false) Integer age,
-                                                    @RequestParam(required = false) String gender,
-                                                    @RequestParam(required = false) Integer salary) {
-        Employee employeeToBeUpdated = employeeService.updateEmployee(employeeId, name, age, gender, salary);
+                                                    @RequestBody Employee employeeDetailsTobeUpdated) {
+        Employee employeeToBeUpdated = employeeService.updateEmployee(employeeId, employeeDetailsTobeUpdated);
         if (employeeToBeUpdated == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
