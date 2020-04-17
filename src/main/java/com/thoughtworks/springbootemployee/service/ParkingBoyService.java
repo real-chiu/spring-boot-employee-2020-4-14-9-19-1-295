@@ -27,4 +27,8 @@ public class ParkingBoyService {
         }
         return parkingBoyRepository.findAll();
     }
+
+    public ParkingBoy addParkingBoy(ParkingBoy parkingBoyToBeAdded) {
+        return parkingBoyRepository.save(parkingBoyToBeAdded);
+    }
 }

@@ -27,4 +27,14 @@ public class ParkingBoyController {
         List<ParkingBoy> allParkingBoy = parkingBoyService.getAllParkingBoy(page, pageSize);
         return new ResponseEntity<>(allParkingBoy, HttpStatus.OK);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ParkingBoy> addNewParkingBoy(@RequestBody ParkingBoy parkingBoyToBeAdded) {
+        ParkingBoy newAddedParkingBoy = parkingBoyService.addParkingBoy(parkingBoyToBeAdded);
+        if (newAddedParkingBoy == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(parkingBoyToBeAdded, HttpStatus.CREATED);
+    }
 }
