@@ -44,7 +44,7 @@ public class EmployeeService {
         if (employeeToBeDeleted == null) {
             return null;
         }
-        employeeRepository.deleteById(employeeId);
+        employeeRepository.deleteById(employeeId); 
         return employeeToBeDeleted;
     }
 
