@@ -1,1 +1,1 @@
-INSERT INTO test_table VALUES (1, 'first record')
+INSERT INTO test_table VALUES (1, 'first record');
