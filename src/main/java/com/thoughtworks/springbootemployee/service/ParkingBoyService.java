@@ -23,7 +23,7 @@ public class ParkingBoyService {
         Pageable pageable = null;
         if (page != null && pageSize != null) {
             pageable = PageRequest.of(page, pageSize);
-            return (List<ParkingBoy>) parkingBoyRepository.findAll(pageable);
+            return parkingBoyRepository.findAll(pageable).getContent();
         }
         return parkingBoyRepository.findAll();
     }

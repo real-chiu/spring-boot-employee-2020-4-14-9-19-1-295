@@ -26,4 +26,25 @@ public class Employee {
     @JoinColumn(name = "parkingBoyId", referencedColumnName = "id")
     private ParkingBoy parkingBoy;
 
+    public void update(Employee employeeDetailsTobeUpdated) {
+        // move logic
+        if (employeeDetailsTobeUpdated.getName()  != null) {
+            setName(employeeDetailsTobeUpdated.getName());
+        }
+        if (employeeDetailsTobeUpdated.getAge() != null) {
+            setAge(employeeDetailsTobeUpdated.getAge());
+        }
+        if (employeeDetailsTobeUpdated.getGender()  != null) {
+            setGender(employeeDetailsTobeUpdated.getGender());
+        }
+        if (employeeDetailsTobeUpdated.getSalary()  != null) {
+            setSalary(employeeDetailsTobeUpdated.getSalary());
+        }
+        if (employeeDetailsTobeUpdated.getCompanyId()  != null) {
+            setCompanyId(employeeDetailsTobeUpdated.getCompanyId());
+        }
+        if (employeeDetailsTobeUpdated.getParkingBoy()  != null) {
+            setParkingBoy(employeeDetailsTobeUpdated.getParkingBoy());
+        }
+    }
 }

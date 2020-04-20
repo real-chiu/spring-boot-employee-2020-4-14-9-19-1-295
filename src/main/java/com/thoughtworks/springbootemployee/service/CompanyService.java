@@ -1,6 +1,5 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.commonUtils.Paging;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -21,7 +20,7 @@ public class CompanyService {
     public List<Company> getAllCompany(Integer page, Integer pageSize) {
         if (page != null && pageSize != null) {
             Pageable pageable = PageRequest.of(page, pageSize);
-            return (List<Company>) companyRepository.findAll(pageable);
+            return companyRepository.findAll(pageable).getContent();
         }
         return companyRepository.findAll();
     }
@@ -51,18 +50,25 @@ public class CompanyService {
         return companyToBeDeleted;
     }
 
+    //
     public Company updateCompany(Integer companyId, String companyName, Integer employeesNumber, List<Employee> employees) {
         Company companyToBeUpdated = companyRepository.findById(companyId).orElse(null);
         if (companyToBeUpdated == null) {
             return null;
         }
-        Company companyWithChanges = new Company(
-                companyId,
-                companyName  == null ? companyToBeUpdated.getCompanyName() : companyName,
-                employeesNumber == null ? companyToBeUpdated.getEmployeesNumber() : employeesNumber,
-                employees == null ? companyToBeUpdated.getEmployees() : employees
-        );
+        //
+        Company companyWithChanges = getCompany(companyId, companyName, employeesNumber, employees, companyToBeUpdated);
         companyRepository.save(companyWithChanges);
         return companyWithChanges;
+    }
+
+    // put into Company
+    private Company getCompany(Integer companyId, String companyName, Integer employeesNumber, List<Employee> employees, Company companyToBeUpdated) {
+        return new Company(
+                    companyId,
+                    companyName  == null ? companyToBeUpdated.getCompanyName() : companyName,
+                    employeesNumber == null ? companyToBeUpdated.getEmployeesNumber() : employeesNumber,
+                    employees == null ? companyToBeUpdated.getEmployees() : employees
+            );
     }
 }

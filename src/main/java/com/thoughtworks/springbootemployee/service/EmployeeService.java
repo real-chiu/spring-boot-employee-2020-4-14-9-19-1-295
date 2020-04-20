@@ -1,6 +1,5 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.commonUtils.Paging;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +12,6 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-
-    private Paging paging = new Paging();
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -53,17 +50,9 @@ public class EmployeeService {
         if (employeeToBeUpdated == null) {
             return null;
         }
-        // move logic
-        Employee employeeWithChanges = new Employee(
-                employeeId == null ? employeeToBeUpdated.getId() : employeeId,
-                employeeDetailsTobeUpdated.getName()  == null ? employeeToBeUpdated.getName() : employeeDetailsTobeUpdated.getName(),
-                (Integer) employeeDetailsTobeUpdated.getAge() == null ? employeeToBeUpdated.getAge() : employeeDetailsTobeUpdated.getAge(),
-                employeeDetailsTobeUpdated.getGender() == null ? employeeToBeUpdated.getGender() : employeeDetailsTobeUpdated.getGender(),
-                (Integer) employeeDetailsTobeUpdated.getSalary() == null ? employeeToBeUpdated.getSalary() : employeeDetailsTobeUpdated.getSalary(),
-                (Integer) employeeDetailsTobeUpdated.getCompanyId() == null ? employeeToBeUpdated.getCompanyId() : employeeDetailsTobeUpdated.getCompanyId(),
-                employeeDetailsTobeUpdated.getParkingBoy() == null ? employeeToBeUpdated.getParkingBoy() : employeeDetailsTobeUpdated.getParkingBoy()
-        );
-        employeeRepository.save(employeeWithChanges);
+        employeeToBeUpdated.update(employeeDetailsTobeUpdated);
+        employeeRepository.save(employeeToBeUpdated);
         return employeeToBeUpdated;
     }
+
 }
